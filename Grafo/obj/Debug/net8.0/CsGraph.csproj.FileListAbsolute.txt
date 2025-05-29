@@ -1,0 +1,11 @@
+C:\Users\pietr\Desktop\c#\VisualGraph\Grafo\bin\Debug\net8.0\CsGraph.deps.json
+C:\Users\pietr\Desktop\c#\VisualGraph\Grafo\bin\Debug\net8.0\CsGraph.dll
+C:\Users\pietr\Desktop\c#\VisualGraph\Grafo\bin\Debug\net8.0\CsGraph.pdb
+C:\Users\pietr\Desktop\c#\VisualGraph\Grafo\obj\Debug\net8.0\CsGraph.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\pietr\Desktop\c#\VisualGraph\Grafo\obj\Debug\net8.0\CsGraph.AssemblyInfoInputs.cache
+C:\Users\pietr\Desktop\c#\VisualGraph\Grafo\obj\Debug\net8.0\CsGraph.AssemblyInfo.cs
+C:\Users\pietr\Desktop\c#\VisualGraph\Grafo\obj\Debug\net8.0\CsGraph.csproj.CoreCompileInputs.cache
+C:\Users\pietr\Desktop\c#\VisualGraph\Grafo\obj\Debug\net8.0\CsGraph.dll
+C:\Users\pietr\Desktop\c#\VisualGraph\Grafo\obj\Debug\net8.0\refint\CsGraph.dll
+C:\Users\pietr\Desktop\c#\VisualGraph\Grafo\obj\Debug\net8.0\CsGraph.pdb
+C:\Users\pietr\Desktop\c#\VisualGraph\Grafo\obj\Debug\net8.0\ref\CsGraph.dll
