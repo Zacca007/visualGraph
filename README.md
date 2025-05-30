@@ -1,19 +1,19 @@
 # visualGraph
 
-**visualGraph** è un'applicazione desktop sviluppata in C# per la visualizzazione e di grafi e applicare algoritmi su di essi.
+**visualGraph** è un'applicazione desktop sviluppata in C# che consente la visualizzazione di grafi caricati da file JSON e l'esecuzione di algoritmi su di essi. L'applicazione utilizza Windows Forms per disegnare i grafi e supporta l'elaborazione del risultato di algoritmi definiti nel codice.
 
 ## ✨ Caratteristiche
 
-* Creazione e visualizzazione di grafi orientati e non orientati
-* Aggiunta, modifica e rimozione di nodi e archi  
-* lettura dei grafi da file json  
-* Interfaccia sviluppata con Windows Forms
+* Caricamento di grafi orientati da file JSON
+* Visualizzazione grafica automatica dei nodi e degli archi
+* Esecuzione di algoritmi su grafi
+* Interfaccia grafica realizzata con Windows Forms
 
 ## 🗂️ Struttura del Progetto
 
-* `Grafo/` – Contiene le classi per la struttura dati del grafo
-* `UIGraph/` – Logica dell'interfaccia utente e interazioni
-* `VisualGraph/` – Entry point e gestione dell'applicazione
+* `Grafo/` – Classi per la rappresentazione di grafi, nodi e archi
+* `UIGraph/` – Rendering grafico dei nodi e archi
+* `VisualGraph/` – Entry point dell'applicazione, logica principale e gestione della GUI
 
 ## 🛠️ Requisiti
 
@@ -28,21 +28,21 @@
    git clone https://github.com/Zacca007/visualGraph.git
    ```
 
-2. Apri il file `VisualGraph.sln` con Visual Studio.
+2. Apri `VisualGraph.sln` con Visual Studio.
 
 3. Compila ed esegui il progetto.
 
 ## 📌 Utilizzo
 
-* Avvia l'applicazione
-* Usa l'interfaccia per creare grafi, aggiungere nodi e archi
-* Applica algoritmi sui grafi
-* Salva o esporta i tuoi lavori
+* Avvia l'applicazione.
+* Carica un file JSON contenente la definizione del grafo.
+* Il grafo verrà visualizzato automaticamente.
+* Puoi eseguire algoritmi predefiniti sul grafo; l'interfaccia mostrerà solo il risultato finale.
 
 ## 🤝 Contribuire
 
-I contributi sono benvenuti! Apri una issue per discutere nuove funzionalità o migliorie prima di inviare una pull request.
+Contributi, suggerimenti o correzioni sono benvenuti. Apri una issue per discutere nuove funzionalità o invia una pull request.
 
 ## 📄 Licenza
 
-Distribuito sotto la licenza **GPL-2.0**. Vedi il file [LICENSE](LICENSE) per maggiori dettagli.
+Distribuito sotto licenza **GPL-2.0**. Consulta il file [LICENSE](LICENSE) per maggiori dettagli.
