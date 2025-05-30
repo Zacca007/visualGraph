@@ -1,13 +1,12 @@
 # visualGraph
 
-**visualGraph** è un'applicazione desktop sviluppata in C# per la visualizzazione e l'interazione con strutture dati di tipo grafo. Progettata per offrire un'interfaccia utente intuitiva, consente di creare, modificare e analizzare grafi in modo efficace.
+**visualGraph** è un'applicazione desktop sviluppata in C# per la visualizzazione e di grafi e applicare algoritmi su di essi.
 
 ## ✨ Caratteristiche
 
 * Creazione e visualizzazione di grafi orientati e non orientati
-* Aggiunta, modifica e rimozione di nodi e archi
-* Visualizzazione interattiva con supporto al drag-and-drop
-* Algoritmi base implementati (DFS, BFS)
+* Aggiunta, modifica e rimozione di nodi e archi  
+* lettura dei grafi da file json  
 * Interfaccia sviluppata con Windows Forms
 
 ## 🗂️ Struttura del Progetto
