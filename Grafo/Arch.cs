@@ -8,6 +8,11 @@
         public bool IsDirected { get; set; }
         public string Label { get; set; }
 
+        /// <summary>
+        /// Costruttore dell'arco che collega due nodi con un costo, 
+        /// una direzionalità e un'etichetta opzionali.
+        /// Aggiunge automaticamente l'arco alla lista degli archi dei due nodi.
+        /// </summary>
         public Arch(Node source, Node target, int cost = 1, bool isDirected = false, string label = "")
         {
             Source = source;
@@ -16,11 +21,15 @@
             IsDirected = isDirected;
             Label = label;
 
-            // Connessione bidirezionale automatica
+            // Connessione bidirezionale automatica (aggiunge questo arco a entrambi i nodi)
             Source.AddArch(this);
             Target.AddArch(this);
         }
 
+        /// <summary>
+        /// Restituisce il nodo opposto a quello passato come parametro, 
+        /// se appartiene all'arco. Solleva eccezione altrimenti.
+        /// </summary>
         public Node GetOppositeNode(Node node)
         {
             if (node == Source) return Target;
@@ -28,12 +37,18 @@
             throw new ArgumentException("Il nodo specificato non appartiene a questo arco.");
         }
 
+        /// <summary>
+        /// Rappresentazione testuale dell'arco, con indicazione della direzione e del costo.
+        /// </summary>
         public override string ToString()
         {
             string arrow = IsDirected ? " -> " : " -- ";
             return $"{Source.Label}{arrow}{Target.Label} ({Cost})";
         }
 
+        /// <summary>
+        /// Confronta due archi per uguaglianza basandosi su nodi, costo, direzionalità ed etichetta.
+        /// </summary>
         public override bool Equals(object? obj)
         {
             return obj is Arch arch &&
@@ -42,11 +57,6 @@
                    Cost == arch.Cost &&
                    IsDirected == arch.IsDirected &&
                    Label == arch.Label;
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Source, Target, Cost, IsDirected, Label);
         }
     }
 }

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CsGraph")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4e12766d6180a6a3c9aa70e2367ccd55c5d168f5")]
 [assembly: System.Reflection.AssemblyProductAttribute("CsGraph")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CsGraph")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

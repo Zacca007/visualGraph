@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\pietr\\Desktop\\c#\\VisualGraph\\VisualGraph\\VisualGraph.csproj": {}
+    "C:\\Users\\pietr\\Desktop\\projects\\visualGraph\\VisualGraph\\VisualGraph.csproj": {}
   },
   "projects": {
-    "C:\\Users\\pietr\\Desktop\\c#\\VisualGraph\\Grafo\\CsGraph.csproj": {
+    "C:\\Users\\pietr\\Desktop\\projects\\visualGraph\\Grafo\\CsGraph.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\pietr\\Desktop\\c#\\VisualGraph\\Grafo\\CsGraph.csproj",
+        "projectUniqueName": "C:\\Users\\pietr\\Desktop\\projects\\visualGraph\\Grafo\\CsGraph.csproj",
         "projectName": "CsGraph",
-        "projectPath": "C:\\Users\\pietr\\Desktop\\c#\\VisualGraph\\Grafo\\CsGraph.csproj",
+        "projectPath": "C:\\Users\\pietr\\Desktop\\projects\\visualGraph\\Grafo\\CsGraph.csproj",
         "packagesPath": "C:\\Users\\pietr\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\pietr\\Desktop\\c#\\VisualGraph\\Grafo\\obj\\",
+        "outputPath": "C:\\Users\\pietr\\Desktop\\projects\\visualGraph\\Grafo\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -69,14 +69,14 @@
         }
       }
     },
-    "C:\\Users\\pietr\\Desktop\\c#\\VisualGraph\\VisualGraph\\VisualGraph.csproj": {
+    "C:\\Users\\pietr\\Desktop\\projects\\visualGraph\\VisualGraph\\VisualGraph.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\pietr\\Desktop\\c#\\VisualGraph\\VisualGraph\\VisualGraph.csproj",
+        "projectUniqueName": "C:\\Users\\pietr\\Desktop\\projects\\visualGraph\\VisualGraph\\VisualGraph.csproj",
         "projectName": "VisualGraph",
-        "projectPath": "C:\\Users\\pietr\\Desktop\\c#\\VisualGraph\\VisualGraph\\VisualGraph.csproj",
+        "projectPath": "C:\\Users\\pietr\\Desktop\\projects\\visualGraph\\VisualGraph\\VisualGraph.csproj",
         "packagesPath": "C:\\Users\\pietr\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\pietr\\Desktop\\c#\\VisualGraph\\VisualGraph\\obj\\",
+        "outputPath": "C:\\Users\\pietr\\Desktop\\projects\\visualGraph\\VisualGraph\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -97,8 +97,8 @@
           "net8.0-windows7.0": {
             "targetAlias": "net8.0-windows",
             "projectReferences": {
-              "C:\\Users\\pietr\\Desktop\\c#\\VisualGraph\\Grafo\\CsGraph.csproj": {
-                "projectPath": "C:\\Users\\pietr\\Desktop\\c#\\VisualGraph\\Grafo\\CsGraph.csproj"
+              "C:\\Users\\pietr\\Desktop\\projects\\visualGraph\\Grafo\\CsGraph.csproj": {
+                "projectPath": "C:\\Users\\pietr\\Desktop\\projects\\visualGraph\\Grafo\\CsGraph.csproj"
               }
             }
           }

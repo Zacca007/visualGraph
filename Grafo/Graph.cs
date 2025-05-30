@@ -5,24 +5,33 @@
         public List<Node> Nodes { get; } = [];
         public List<Arch> Arches { get; } = [];
 
+        /// <summary>
+        /// Costruttore con parametri: inizializza un grafo con nodi e archi specificati
+        /// </summary>
         public Graph(List<Node> nodes, List<Arch> arches) : this()
         {
             Nodes = nodes;
             Arches = arches;
         }
 
+        /// <summary>
+        /// Aggiunge un nodo al grafo, se non è già presente
+        /// </summary>
         public void AddNode(Node node)
         {
             if (!Nodes.Contains(node))
                 Nodes.Add(node);
         }
 
+        /// <summary>
+        /// Rimuove un nodo dal grafo e tutti gli archi ad esso connessi
+        /// </summary>
         public void RemoveNode(Node node)
         {
             if (Nodes.Remove(node))
             {
-                // Rimuove tutti gli archi connessi al nodo
-                IEnumerable<Arch> connectedArches = Arches.Where(e => e.Source == node || e.Target == node).ToList();
+                // Rimuove gli archi che partono o arrivano al nodo
+                IEnumerable<Arch> connectedArches = [.. Arches.Where(e => e.Source == node || e.Target == node)];
                 foreach (Arch arch in connectedArches)
                 {
                     RemoveArch(arch);
@@ -30,14 +39,18 @@
             }
         }
 
+        /// <summary>
+        /// Aggiunge un arco tra due nodi, evitando duplicati e conflitti logici
+        /// </summary>
         public void AddArch(Node source, Node target, int cost = 1, bool isDirected = false, string label = "")
         {
-            var arch = new Arch(source, target, cost, isDirected, label);
+            Arch arch = new Arch(source, target, cost, isDirected, label);
+
             foreach (Arch a in Arches)
             {
                 if (a.Equals(arch))
                 {
-                    return;
+                    return; // Arco già presente
                 }
 
                 if (a.Target == source && a.Source == target && !a.IsDirected)
@@ -54,6 +67,9 @@
             Arches.Add(arch);
         }
 
+        /// <summary>
+        /// Rimuove un arco dal grafo e dai nodi a cui è collegato
+        /// </summary>
         public void RemoveArch(Arch arch)
         {
             arch.Source.RemoveArch(arch);
@@ -61,32 +77,40 @@
             Arches.Remove(arch);
         }
 
-        public IEnumerable<Node> GetAdjacentNodes(Node node)
+        /// <summary>
+        /// Restituisce l'elenco dei nodi adiacenti a un dato nodo
+        /// </summary>
+        public static IEnumerable<Node> GetAdjacentNodes(Node node)
         {
             return node.GetAdjacentNodes();
         }
 
+        /// <summary>
+        /// Restituisce una rappresentazione testuale del grafo (nodi e archi)
+        /// </summary>
         public override string ToString()
         {
-            var nodesStr = string.Join(", ", Nodes.Select(n => n.Label));
-            var edgesStr = string.Join("\n", Arches.Select(e => e.ToString()));
+            string nodesStr = string.Join(", ", Nodes.Select(n => n.Label));
+            string edgesStr = string.Join("\n", Arches.Select(e => e.ToString()));
             return $"Nodes: {nodesStr}\nEdges:\n{edgesStr}";
         }
 
+        /// <summary>
+        /// Algoritmo di Dijkstra: restituisce un nuovo grafo che rappresenta il percorso minimo
+        /// dal nodo di partenza a quello di arrivo.
+        /// </summary>
         public Graph Dijkstra(Node startNode, Node endNode)
         {
-            // Verifica che i nodi esistano nel grafo
             if (!Nodes.Contains(startNode) || !Nodes.Contains(endNode))
-                throw new ArgumentException("I nodi di partenza o destinazione non esistono nel grafo");
+                throw new ArgumentException("starting or ending node is not on the graph");
 
-            // Dizionari per tenere traccia delle distanze e dei predecessori
-            var distances = new Dictionary<Node, int>();
-            var predecessors = new Dictionary<Node, Node>();
-            var visited = new HashSet<Node>();
-            var unvisited = new HashSet<Node>();
+            Dictionary<Node, int> distances = [];
+            Dictionary<Node, Node> predecessors = [];
+            HashSet<Node> visited = [];
+            HashSet<Node> unvisited = [];
 
-            // Inizializzazione: distanza infinita per tutti i nodi tranne il nodo di partenza
-            foreach (var node in Nodes)
+            // Inizializza le distanze: 0 per il nodo di partenza, infinito per gli altri
+            foreach (Node node in Nodes)
             {
                 distances[node] = node == startNode ? 0 : int.MaxValue;
                 unvisited.Add(node);
@@ -95,10 +119,10 @@
             while (unvisited.Count > 0)
             {
                 // Trova il nodo non visitato con la distanza minima
-                Node currentNode = null;
+                Node? currentNode = null;
                 int minDistance = int.MaxValue;
 
-                foreach (var node in unvisited)
+                foreach (Node node in unvisited)
                 {
                     if (distances[node] < minDistance)
                     {
@@ -107,35 +131,32 @@
                     }
                 }
 
-                // Se non riusciamo a trovare un nodo raggiungibile, non esiste un percorso
+                // Se non esiste un nodo raggiungibile, termina
                 if (currentNode == null || distances[currentNode] == int.MaxValue)
                     break;
 
-                // Se abbiamo raggiunto il nodo di destinazione, possiamo fermarci
+                // Se raggiungiamo il nodo di destinazione, possiamo terminare
                 if (currentNode == endNode)
                     break;
 
-                // Rimuovi il nodo corrente dai non visitati
                 unvisited.Remove(currentNode);
                 visited.Add(currentNode);
 
-                // Esamina tutti i vicini del nodo corrente
-                foreach (var arch in currentNode.Arches)
+                // Esamina tutti i vicini
+                foreach (Arch arch in currentNode.Arches)
                 {
                     Node neighbor = arch.GetOppositeNode(currentNode);
 
-                    // Se è un arco diretto, verifica la direzione
+                    // Salta archi direzionali non validi
                     if (arch.IsDirected && arch.Source != currentNode)
                         continue;
 
-                    // Se il vicino è già stato visitato, saltalo
                     if (visited.Contains(neighbor))
                         continue;
 
-                    // Calcola la nuova distanza attraverso il nodo corrente
                     int newDistance = distances[currentNode] + arch.Cost;
 
-                    // Se abbiamo trovato un percorso più breve, aggiorna
+                    // Aggiorna distanza se il nuovo percorso è più breve
                     if (newDistance < distances[neighbor])
                     {
                         distances[neighbor] = newDistance;
@@ -144,45 +165,41 @@
                 }
             }
 
-            // Se il nodo di destinazione non è raggiungibile
+            // Nessun percorso trovato
             if (!predecessors.ContainsKey(endNode) && startNode != endNode)
-                return new Graph(); // Ritorna un grafo vuoto
+                return new Graph(); // grafo vuoto
 
-            // Ricostruisci il percorso dal nodo di destinazione al nodo di partenza
-            var path = new List<Node>();
+            // Ricostruzione del percorso
+            List<Node> path = [];
             Node current = endNode;
 
             while (current != null)
             {
                 path.Add(current);
-                predecessors.TryGetValue(current, out current);
+                predecessors.TryGetValue(current, out current!);
             }
 
-            path.Reverse(); // Inverti per avere il percorso dal start all'end
+            path.Reverse(); // Dal nodo di partenza a quello di arrivo
 
-            // Crea il grafo risultante con il percorso più breve
-            var resultGraph = new Graph();
+            // Costruisce un nuovo grafo contenente solo il percorso minimo
+            Graph resultGraph = new();
 
-            // Aggiungi tutti i nodi del percorso
-            foreach (var node in path)
+            foreach (Node node in path)
             {
                 resultGraph.AddNode(node);
             }
 
-            // Aggiungi gli archi che collegano i nodi consecutivi nel percorso
             for (int i = 0; i < path.Count - 1; i++)
             {
                 Node fromNode = path[i];
                 Node toNode = path[i + 1];
 
-                // Trova l'arco originale tra questi due nodi
-                var originalArch = Arches.FirstOrDefault(arch =>
+                Arch? originalArch = Arches.FirstOrDefault(arch =>
                     (arch.Source == fromNode && arch.Target == toNode) ||
                     (!arch.IsDirected && arch.Source == toNode && arch.Target == fromNode));
 
                 if (originalArch != null)
                 {
-                    // Aggiungi l'arco al grafo risultante mantenendo le proprietà originali
                     resultGraph.Arches.Add(new Arch(fromNode, toNode,
                         originalArch.Cost, originalArch.IsDirected, originalArch.Label));
                 }

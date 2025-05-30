@@ -1,20 +1,27 @@
 using CsGraph;
 using System.Text.Json;
+
 namespace VisualGraph
 {
     public partial class Home : Form
     {
         private Graph? graph;
-        private Brush nodeColor = Brushes.LightBlue;
-        private Brush textColor = Brushes.Black;
-        private Pen archPen = Pens.Black;
-        private Pen arrowPen = new(Color.Black, 2) { EndCap = System.Drawing.Drawing2D.LineCap.ArrowAnchor };
+
+        // Definizione colori e penne per il disegno di nodi e archi
+        private readonly Brush nodeColor = Brushes.LightBlue;
+        private readonly Brush textColor = Brushes.Black;
+        private readonly Pen archPen = Pens.Black;
+        private readonly Pen arrowPen = new(Color.Black, 2) { EndCap = System.Drawing.Drawing2D.LineCap.ArrowAnchor };
 
         public Home()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Metodo di override per il disegno del form.
+        /// Disegna archi e nodi del grafo, se presente.
+        /// </summary>
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
@@ -22,32 +29,41 @@ namespace VisualGraph
 
             if (graph == null) return;
 
-            //disegno archi
-            foreach (Arch arch in graph!.Arches)
+            // Disegno archi: linea semplice o con freccia se diretto
+            foreach (Arch arch in graph.Arches)
             {
                 Point source = arch.Source.Position;
                 Point target = arch.Target.Position;
-                g.DrawLine(arch.IsDirected ? arrowPen : archPen, source, target);
 
+                g.DrawLine(arch.IsDirected ? arrowPen : archPen, source, target);
             }
 
-            //disegno nodi
+            // Disegno nodi come cerchi con etichetta centrata
             foreach (Node node in graph.Nodes)
             {
                 const int diameter = 30;
                 Point point = node.Position;
                 Rectangle circle = new(point.X - diameter / 2, point.Y - diameter / 2, diameter, diameter);
+
                 g.FillEllipse(nodeColor, circle);
                 g.DrawEllipse(Pens.Black, circle);
+
+                // Etichetta del nodo disegnata centrata (adattabile)
                 g.DrawString(node.Label, this.Font, textColor, point.X - 6, point.Y - 8);
             }
         }
 
+        /// <summary>
+        /// Evento click sul bottone di importazione grafo da file JSON.
+        /// Esegue parsing e ricostruzione della struttura grafo da JSON.
+        /// </summary>
         private void btnImportGraph_Click(object sender, EventArgs e)
         {
-            using OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*";
-            openFileDialog.Title = "Seleziona un file JSON del grafo";
+            using OpenFileDialog openFileDialog = new()
+            {
+                Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*",
+                Title = "Seleziona un file JSON del grafo"
+            };
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -56,11 +72,11 @@ namespace VisualGraph
                 {
                     string json = File.ReadAllText(path);
 
-                    // Deserializza in una struttura temporanea che corrisponde al JSON
-                    var jsonData = JsonSerializer.Deserialize<JsonElement>(json);
-                    Graph loadedGraph = new Graph();
+                    // Deserializza JSON in JsonElement per estrarre nodi e archi
+                    JsonElement jsonData = JsonSerializer.Deserialize<JsonElement>(json);
+                    Graph loadedGraph = new();
 
-                    // crea tutti i nodi
+                    // Prima passata: crea tutti i nodi e li memorizza in un dizionario per facile lookup
                     Dictionary<string, Node> nodeMap = new Dictionary<string, Node>();
                     if (jsonData.TryGetProperty("nodes", out JsonElement nodesElement))
                     {
@@ -76,7 +92,7 @@ namespace VisualGraph
                         }
                     }
 
-                    // Seconda passa: crea tutti gli archi
+                    // Seconda passata: crea archi collegando nodi usando il dizionario
                     if (jsonData.TryGetProperty("arches", out JsonElement archesElement))
                     {
                         foreach (JsonElement archElement in archesElement.EnumerateArray())
@@ -93,45 +109,50 @@ namespace VisualGraph
                         }
                     }
 
+                    // Assegna il grafo caricato e richiede ridisegno
                     graph = loadedGraph;
-                    Invalidate(); // Triggera la chiamata a OnPaint
+                    Invalidate();
 
-                    MessageBox.Show($"Grafo caricato con successo!\nNodi: {graph.Nodes.Count}\nArchi: {graph.Arches.Count}", "Successo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show($"Graph loaded successfully!\nNodes: {graph.Nodes.Count}\nArches: {graph.Arches.Count}", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Errore durante il caricamento: {ex.Message}", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Error during the load: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
 
+        /// <summary>
+        /// Evento click sul bottone di scelta algoritmo.
+        /// Apre la finestra di selezione algoritmo, passandole il grafo attuale.
+        /// </summary>
         private void btnAlgorithmChoice_Click(object sender, EventArgs e)
         {
             if (graph != null)
             {
-                SelezioneAlgoritmo algorithmForm = new SelezioneAlgoritmo(graph);
+                SelezioneAlgoritmo algorithmForm = new(graph);
 
-                // Sottoscrivi l'evento
+                // Sottoscrive l'evento per ottenere il risultato dell'algoritmo
                 algorithmForm.AlgorithmExecuted += OnAlgorithmExecuted;
 
                 algorithmForm.Show();
             }
             else
             {
-                MessageBox.Show("devi prima caricare un grafo", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Must load a graph first", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        // Metodo che gestisce il risultato dell'algoritmo
+        /// <summary>
+        /// Gestisce il risultato restituito dall'esecuzione di un algoritmo.
+        /// Aggiorna il grafo visualizzato e mostra messaggio di conferma.
+        /// </summary>
         private void OnAlgorithmExecuted(Graph result)
         {
-            // Qui puoi gestire il risultato in base al tipo
-            MessageBox.Show($"Algoritmo eseguito! Risultato: {result}", "Risultato", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            graph = result;
+            MessageBox.Show($"Algorithm executed successfully! result:\n{result}", "Result", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            // Se vuoi aggiornare la visualizzazione del grafo
-            Invalidate();
+            graph = result;
+            Invalidate(); // Ridisegna il grafo aggiornato
         }
     }
 }
